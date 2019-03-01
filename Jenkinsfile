@@ -15,6 +15,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
+            agent none
             script{
                 unstash 'targetfiles'
                 sh 'ls -l -R'
