@@ -1,26 +1,26 @@
 pipeline {
   agent none
-  stages{
-    stage('Build Jar'){
-        agent {
-          docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-          }
+  stages {
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3-alpine'
+          args '-v /root/.m2:/root/.m2'
         }
-        steps {
-            sh 'mvn package'
-            stash includes: 'target/*.jar', name: 'targetfiles'
-        }
-    }
-    stage('Deploy') {
-      agent none
+      }
       steps {
-            script{
-                unstash 'targetfiles'
-                sh 'ls -l -R'
-                def image = docker.build("image-name:test", ' .')
-            }
+        sh 'mvn clean install'
+        stash includes: 'target/*.jar', name: 'targetfiles'
+      }
+    }
+    stage('Docker Build') {
+      agent any
+      steps {
+        script{
+          unstash 'targetfiles'
+          sh 'ls -l -R'
+          def image = docker.build("my-app:test", ' .')
+        }
       }
     }
   }
