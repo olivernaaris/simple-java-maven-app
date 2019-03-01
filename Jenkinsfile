@@ -14,12 +14,6 @@ pipeline {
         }
     }
     stage('Deploy') {
-        agent {
-            node {
-                label 'DockerDefault'
-            }
-         }
-
       steps {
             script{
                 unstash 'targetfiles'
