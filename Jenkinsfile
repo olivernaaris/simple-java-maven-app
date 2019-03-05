@@ -1,5 +1,11 @@
 pipeline {
   agent none
+
+   environment {
+    registry = "artifactory.corp.planetway.com:443"
+    registryCredential = 'svc.artifactory_deploy'
+  }
+
   stages {
     stage('Maven Test') {
       agent {
