@@ -38,14 +38,14 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":${GIT_COMMIT}"
+          dockerImage = docker.build image_name + ":${GIT_COMMIT}"
         }
       }
     }
     stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry('https://' + registry, registryCredential ) {
+          docker.withRegistry('https://' + image_name, registryCredential ) {
             dockerImage.push()
           }
         }
