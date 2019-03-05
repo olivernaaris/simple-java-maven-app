@@ -45,7 +45,7 @@ pipeline {
     stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry( registry, registryCredential ) {
+          docker.withRegistry('https://' + registry, registryCredential ) {
             dockerImage.push()
           }
         }
