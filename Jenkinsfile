@@ -2,7 +2,8 @@ pipeline {
   agent none
 
    environment {
-    registry = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
+    # it's important that we also define artifactory in the image name so we can push the image to our private registry
+    image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     registryCredential = 'svc.artifactory_deploy'
   }
 
@@ -37,17 +38,14 @@ pipeline {
     }
     stage('Building image') {
       steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
+        GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+        dockerImage = docker.build registry + ":${GIT_COMMIT_HASH}"
       }
     }
     stage('Deploy Image') {
       steps{
-        script {
-          docker.withRegistry('https://' + registry, registryCredential ) {
-            dockerImage.push()
-          }
+        docker.withRegistry('https://' + registry, registryCredential ) {
+          dockerImage.push()
         }
       }
     }
