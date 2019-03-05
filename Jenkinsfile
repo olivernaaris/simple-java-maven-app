@@ -2,7 +2,6 @@ pipeline {
   agent none
 
    environment {
-    # it's important that we also define artifactory in the image name so we can push the image to our private registry
     image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     registryCredential = 'svc.artifactory_deploy'
   }
