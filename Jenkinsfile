@@ -3,7 +3,7 @@ pipeline {
 
    environment {
     registry = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
-    registryCredential = 'svc.artifactory_deploy'
+    registryCredential = 'svc.artifactory_deploy/******'
   }
 
   stages {
