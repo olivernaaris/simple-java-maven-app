@@ -29,13 +29,15 @@ pipeline {
         stash includes: 'target/*.jar', name: 'targetfiles'
       }
     }
-    stage('Docker Build') {
+    stage('Docker Build and Push') {
       agent any
       steps {
         script{
           unstash 'targetfiles'
           sh 'ls -l -R'
-          def image = docker.build("my-app:test", ' .')
+          GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+          def image = docker.build("artifactory.corp.planetway.com:443/docker-virtual/my-app:${GIT_COMMIT_HASH}", ' .')
+          image.push()
         }
       }
     }
