@@ -4,6 +4,7 @@ pipeline {
    environment {
     image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     registryCredential = 'svc.artifactory_deploy'
+    commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
   }
 
   stages {
@@ -37,14 +38,17 @@ pipeline {
     }
     stage('Building image') {
       steps{
-        GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-        dockerImage = docker.build registry + ":${GIT_COMMIT_HASH}"
+        script {
+          dockerImage = docker.build registry + ":${commitId}"
+        }
       }
     }
     stage('Deploy Image') {
       steps{
-        docker.withRegistry('https://' + registry, registryCredential ) {
-          dockerImage.push()
+        script {
+          docker.withRegistry('https://' + registry, registryCredential ) {
+            dockerImage.push()
+          }
         }
       }
     }
