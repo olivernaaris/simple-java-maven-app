@@ -1,8 +1,6 @@
 pipeline {
   agent none
 
-  def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-
   environment {
     imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     registryCredential = 'svc.artifactory_deploy'
@@ -40,7 +38,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(imageName + ":" + shortCommit)
+          dockerImage = docker.build(imageName + ":${git log -n 1 --pretty=format:'%h'}")
         }
       }
     }
