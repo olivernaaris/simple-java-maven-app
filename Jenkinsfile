@@ -39,7 +39,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(image_name + ':' + shortCommit)
+          dockerImage = docker.build(image_name + ":${shortCommit}")
         }
       }
     }
