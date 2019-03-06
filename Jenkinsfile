@@ -1,5 +1,5 @@
 pipeline {
-  { label 'jenkins-lin64-slave' }
+  agent { label 'jenkins-lin64-slave' }
 
   environment {
     imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
