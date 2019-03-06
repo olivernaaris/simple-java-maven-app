@@ -2,7 +2,7 @@ pipeline {
   agent none
 
    environment {
-    image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
+    imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
     registryCredential = 'svc.artifactory_deploy'
   }
@@ -39,14 +39,14 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(image_name + ":${shortCommit}")
+          dockerImage = docker.build(imageName + ":${env.shortCommit}")
         }
       }
     }
     stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry('https://' + image_name, registryCredential) {
+          docker.withRegistry('https://' + imageName, registryCredential) {
             dockerImage.push()
           }
         }
