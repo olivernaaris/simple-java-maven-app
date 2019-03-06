@@ -52,12 +52,5 @@ pipeline {
         }
       }
     }
-    //stage('Deploy To Test Environment') {
-    //  steps{
-    //    script {
-    //      // TODO
-    //    }
-    //  }
-    //}
   }
 }
