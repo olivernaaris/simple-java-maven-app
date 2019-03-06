@@ -4,7 +4,7 @@ pipeline {
    environment {
     imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
     //shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-    shortCommit = sh("echo asd1234")
+    shortCommit = 'asdasfagasega4242424'
     registryCredential = 'svc.artifactory_deploy'
   }
 
