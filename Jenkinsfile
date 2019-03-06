@@ -38,7 +38,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+          def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'")
           dockerImage = docker.build(imageName + ":" + shortCommit)
         }
       }
