@@ -38,7 +38,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(image_name + "${':' + env.GIT_COMMIT}")
+          dockerImage = docker.build(image_name + "${':' + env.BUILD_ID}")
         }
       }
     }
