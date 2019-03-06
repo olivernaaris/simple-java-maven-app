@@ -3,6 +3,7 @@ pipeline {
 
    environment {
     image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
+    shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
     registryCredential = 'svc.artifactory_deploy'
   }
 
@@ -38,7 +39,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(image_name + "${':' + env.BUILD_ID}")
+          dockerImage = docker.build(image_name + ':' + shortCommit")
         }
       }
     }
