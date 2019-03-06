@@ -35,7 +35,7 @@ pipeline {
         stash includes: 'target/*.jar', name: 'targetfiles'
       }
     }
-    stage('Building image') {
+    stage('Build Image') {
       steps{
         script {
           def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'")
@@ -43,7 +43,7 @@ pipeline {
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Push Image') {
       steps{
         script {
           docker.withRegistry('https://' + imageName, registryCredential) {
@@ -52,5 +52,12 @@ pipeline {
         }
       }
     }
-  }
+    //stage('Deploy To Test Environment') {
+    //  steps{
+    //    script {
+    //      // TODO
+    //    }
+    //  }
+    //}
+  //}
 }
