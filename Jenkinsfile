@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
-    registryCredential = 'svc.artifac_deploy'
+    registryCredential = 'svc.artifac_upload'
   }
 
   stages {
