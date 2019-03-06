@@ -3,10 +3,7 @@ pipeline {
 
    environment {
     image_name = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
-    image_tag = "${':' + env.GIT_COMMIT}"
     registryCredential = 'svc.artifactory_deploy'
-
-    GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
   }
 
   stages {
@@ -41,14 +38,14 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build image_name + image_tag
+          dockerImage = docker.build(image_name + "${':' + env.GIT_COMMIT}")
         }
       }
     }
     stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry('https://' + image_name, registryCredential ) {
+          docker.withRegistry('https://' + image_name, registryCredential) {
             dockerImage.push()
           }
         }
