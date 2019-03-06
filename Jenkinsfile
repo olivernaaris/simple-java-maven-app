@@ -1,5 +1,5 @@
 pipeline {
-  agent none
+  { label 'jenkins-lin64-slave' }
 
   environment {
     imageName = "artifactory.corp.planetway.com:443/docker-virtual/my-app"
@@ -38,7 +38,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+          def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
           dockerImage = docker.build(imageName + ":" + shortCommit)
         }
       }
